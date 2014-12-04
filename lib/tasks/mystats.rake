@@ -12,3 +12,17 @@ task run: :environment do
   puts
   puts Statistics.slugging_percentage(2007, 'OAK')
 end
+
+task explain: :environment do
+  puts "Explain triple crown winner:"
+  puts
+  puts TripleCrownQuery.new(2012, 'AL').explain
+  puts
+  puts "Explain most improved batting average:"
+  puts
+  puts MostImprovedBattingAverageQuery.new(2009, 2010).explain
+  puts
+  puts "Explain slugging percentage:"
+  puts
+  puts SluggingPercentageQuery.new(2007, 'OAK').explain
+end

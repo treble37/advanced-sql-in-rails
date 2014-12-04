@@ -1,21 +1,11 @@
-class SluggingPercentageQuery
-  attr_reader :year, :team, :ctx
+class SluggingPercentageQuery < Query
+  attr_reader :year, :team
 
-  attr_accessor :result_of_query
+  def initialize(year, team, ctx=nil)
+    super(ctx)
 
-  def initialize(year, team, ctx)
     @year = year
     @team = team
-    @ctx  = ctx
-  end
-
-  def execute
-    run_query
-    prepare_results
-  end
-
-  def run_query
-    self.result_of_query = ctx.find_by_sql(query)
   end
 
   def prepare_results

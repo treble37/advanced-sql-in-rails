@@ -1,27 +1,19 @@
-class MostImprovedBattingAverageQuery
-  MIN_AT_BATS = 200
+class MostImprovedBattingAverageQuery < Query
 
-  attr_reader :from_year, :to_year, :ctx
-  attr_accessor :result_of_query
+  attr_reader :from_year, :to_year, :min_at_bats
 
-  def initialize(from_year, to_year, ctx, arel=false)
+  def initialize(from_year, to_year, ctx=nil, arel=false)
+    super(ctx)
+
     @from_year = from_year
     @to_year   = to_year
-    @ctx       = ctx
     @arel      = arel
+
+    @min_at_bats = 200
   end
 
   def arel?
     @arel
-  end
-
-  def execute
-    run_query
-    prepare_results
-  end
-
-  def run_query
-    self.result_of_query = ctx.find_by_sql(query)
   end
 
   def query
@@ -38,9 +30,5 @@ class MostImprovedBattingAverageQuery
 
   def arel_query
     MostImprovedBattingAverage.new(from_year, to_year, min_at_bats).to_sql
-  end
-
-  def min_at_bats
-    MIN_AT_BATS
   end
 end

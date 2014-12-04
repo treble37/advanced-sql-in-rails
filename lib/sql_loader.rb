@@ -7,14 +7,18 @@ class SqlLoader
   end
 
   def compile(context = nil)
-    ERB.new(template.gsub(/^\s+/, ""), nil, '%').result(context || binding)
+    ERB.new(template, nil, '%').result(context || binding)
   end
 
   def template
-    IO.read(file_location).squish
+    uncompiled_sql_string.squish
   end
 
-  def file_location
+  def uncompiled_sql_string
+    IO.read(path_to_sql_file)
+  end
+
+  def path_to_sql_file
     File.join(Rails.root, 'app', 'sql', "#{filename}.sql.erb")
   end
 end
