@@ -1,8 +1,12 @@
-Code for a job interview.
+Code for a job interview, published here for posterity.
 
-Supposed to showcase object orientation (pretty heavy use of SRP throughout),
-View backed models, Arel, moderately complex queries, & simple use of stored
-procedures.
+[https://github.com/jwhiteman/baseball-stats][https://github.com/jwhiteman/baseball-stats]
+
+Supposed to showcase object orientation (decent use of SRP throughout),
+View backed models, Arel, moderately complex queries, etc.
+
+There are no controllers or standard views, but I've attached some simple
+endpoints in the router.
 
 ```bash
 bundle install
