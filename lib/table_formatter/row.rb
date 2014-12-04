@@ -20,7 +20,7 @@ class TableFormatter
     end
 
     def build(cells)
-      cells.map { |column| Cell::Factory(column, table) }
+      cells.map { |column| Cell.new(column, table) }
     end
   end
 end

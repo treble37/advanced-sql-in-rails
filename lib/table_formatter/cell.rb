@@ -1,20 +1,32 @@
 class TableFormatter
   class Cell
-    class UnkownColumnType < Exception; end
+    WIDTH = 8
 
-    class << self
-      def Factory(cell, table)
-        case cell
-        when NilClass
-          Cell::NullCell.new(cell, table)
-        when String
-          Cell::StringCell.new(cell, table)
-        when Numeric
-          Cell::NumericCell.new(cell, table)
-        else
-          raise UnkownColumnType, "Error: #{cell.class.name}"
-        end
-      end
+    attr_reader :primative, :table
+
+    def initialize(primative, table)
+      @table     = table
+      @primative = primative
+    end
+
+    def appropriate_width_for(column_index)
+      table.appropriate_width_for(column_index)
+    end
+
+    def render(column_index)
+      justify(build, appropriate_width_for(column_index))
+    end
+
+    def build
+      justify(value, WIDTH)
+    end
+
+    def justify(string, amount)
+      string.ljust(amount)
+    end
+
+    def value
+      (primative || 'NULL').to_s
     end
   end
 end
