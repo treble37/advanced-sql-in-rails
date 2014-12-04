@@ -16,14 +16,14 @@ class SluggingPercentage
   end
 
   def size
-    player_info(0).length
+    player_info.length
   end
 
   def team_info
     "#{year} #{team}:"
   end
 
-  def player_info(padding)
+  def player_info(padding = 0)
     "#{last_name}, #{first_name}".ljust(padding)
   end
 
