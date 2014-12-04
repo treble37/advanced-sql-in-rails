@@ -15,6 +15,10 @@ class Query
     prepare_results
   end
 
+  #######
+  private
+  #######
+
   def run_query
     self.result_of_query = run(query)
   end
