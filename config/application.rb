@@ -12,6 +12,7 @@ module Mystats
       #{Rails.root}/lib
       #{Rails.root}/app/sql
       #{Rails.root}/app/queries
+      #{Rails.root}/app/endpoints
     )
   end
 end
