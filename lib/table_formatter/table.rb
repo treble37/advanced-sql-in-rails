@@ -2,9 +2,9 @@ class TableFormatter
   class Table
     attr_reader :rows, :columns
 
-    def initialize(raw_table)
-      @columns = Columns.new(raw_table)
-      @rows    = build(raw_table)
+    def initialize(rows)
+      @columns = Columns::BuildFrom(rows)
+      @rows    = build(rows)
     end
 
     def render
@@ -19,8 +19,8 @@ class TableFormatter
     private
     #######
 
-    def build(table)
-      table.map { |row| Row.new(row, self) }
+    def build(rows)
+      rows.map { |row| Row.new(row, self) }
     end
   end
 end

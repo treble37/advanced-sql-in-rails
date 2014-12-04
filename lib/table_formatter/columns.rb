@@ -2,8 +2,15 @@ class TableFormatter
   class Columns
     attr_reader :columns
 
-    def initialize(raw_table)
-      @columns = build(raw_table.transpose)
+    class << self
+      # sugar
+      def BuildFrom(rows)
+        new(rows)
+      end
+    end
+
+    def initialize(rows)
+      @columns = build(rows.transpose)
     end
 
     def max_widths_for_columns
