@@ -1,6 +1,7 @@
 require 'zlib'
 require 'base64'
 
+# rack has a lobster, we have a...
 class EasterEgg
   def call(_env)
     [200, text_plain, [title, body]]
@@ -18,7 +19,6 @@ class EasterEgg
     "<pre>#{inflate_codd}</pre>"
   end
 
-  # idea stolen from rack's lobster.
   def inflate_codd
     Zlib::Inflate.inflate(Base64.decode64(codd))
   end
