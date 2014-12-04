@@ -17,20 +17,20 @@ class MostImproved
 
   def render
     if result?
-      winner_message
+      message
     else
-      no_winner_message
+      error_message
     end
   end
 
-  def winner_message
-    <<-MSG.squish
-    Most Improved Batting Average from #{from_year} to #{to_year}:
-    #{first_name.capitalize} #{last_name.capitalize} - #{difference} improvement
-    MSG
+  def message
+    "Most Improved Batting Average from " \
+    "#{from_year} to #{to_year}: " \
+    "#{first_name.capitalize} #{last_name.capitalize} " \
+    "- #{difference} improvement"
   end
 
-  def no_winner_message
+  def error_message
     "Error: no result was found."
   end
 end

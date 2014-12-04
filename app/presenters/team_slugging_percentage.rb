@@ -2,7 +2,7 @@ class TeamSluggingPercentage
   attr_reader :results
 
   def initialize(results)
-    @results = wrap_results(results)
+    @results = build(results)
   end
 
   def render
@@ -14,19 +14,15 @@ class TeamSluggingPercentage
   end
 
   def render_team_slugging_percentage
-    results.map { |r| r.render(padding_for_report) }.join("\n")
-  end
-
-  def padding_for_report
-    @padding_for_report ||= results.max_by(&:size).size
+    TableFormatter.new(results).render
   end
 
   #######
   private
   #######
 
-  def wrap_results(raw_results)
-    raw_results.map { |result| SluggingPercentage.new(result) }
+  def build(results)
+    results.map { |result| SluggingPercentage.new(result).render }
   end
 
 end

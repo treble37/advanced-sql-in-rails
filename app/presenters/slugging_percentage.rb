@@ -7,27 +7,17 @@ class SluggingPercentage
     @result = result
   end
 
-  def render(padding)
+  def render
     [
-      team_info,
-      player_info(padding),
-      slugging_percentage_info
-    ].join(' ')
+      year,
+      team,
+      full_name,
+      slugging_percentage
+    ]
   end
 
-  def size
-    player_info.length
+  def full_name
+    "#{last_name}, #{first_name}"
   end
 
-  def team_info
-    "#{year} #{team}:"
-  end
-
-  def player_info(padding = 0)
-    "#{last_name}, #{first_name}".ljust(padding)
-  end
-
-  def slugging_percentage_info
-    "- #{slugging_percentage}"
-  end
 end

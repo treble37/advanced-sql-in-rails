@@ -20,7 +20,8 @@ class TripleCrownWinner
   end
 
   def winner_message
-    "#{year} #{league} Triple Crown Winner: #{first_name.capitalize} #{last_name.capitalize}"
+    "#{year} #{league} Triple Crown Winner: " \
+    "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
   def no_winner_message

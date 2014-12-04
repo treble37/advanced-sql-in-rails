@@ -1,26 +1,26 @@
 class TableFormatter
   class Row
-    attr_reader :row, :transposed_table
+    attr_reader :cells, :table
 
-    def initialize(row, transposed_table)
-      @transposed_table = transposed_table
-      @row              = build(row)
+    def initialize(cells, table)
+      @table = table
+      @cells = build(cells)
     end
 
     def render
-      _render.join(' ')
+      render_cells.join(' ')
     end
 
     #######
     private
     #######
 
-    def _render
-      row.enum_for(:each_with_index).map { |col,index| col.render(index) }
+    def render_cells
+      cells.enum_for(:each_with_index).map { |cell,index| cell.render(index) }
     end
 
-    def build(row)
-      row.map { |column| Column.new(column, transposed_table) }
+    def build(cells)
+      cells.map { |column| Cell::Factory(column, table) }
     end
   end
 end
