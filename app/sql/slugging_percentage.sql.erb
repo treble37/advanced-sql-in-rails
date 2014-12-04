@@ -3,14 +3,15 @@ SELECT
   p.last_name,
   s.team,
   s.year,
-  IFNULL(
+  ROUND(IFNULL(
     (
       (hits - doubles - triples - home_runs) +
       (2 * doubles) + (3 * triples) + (4 * home_runs)
     ) / at_bats
-  , 0) slugging_percentage
+  , 0), 3) slugging_percentage
 FROM statistics s
 JOIN players p ON(p.player_id = s.player_id)
 WHERE s.team = '<%= team %>'
 AND s.year = <%= year %>
-ORDER BY slugging_percentage DESC;
+ORDER BY slugging_percentage DESC
+LIMIT 10;
