@@ -36,7 +36,7 @@ class TripleCrownQuery
   def initialize(year, league, ctx)
     @year    = year
     @league  = league
-    @ctx     = ctx
+    @ctx     = ctx # change to connection ?
   end
 
   def execute
@@ -66,10 +66,10 @@ class TripleCrownQuery
       ) v1 ON (s.player_id = v1.player_id AND s.year = v1.year AND v1.league = s.league)
       INNER JOIN (
         SELECT player_id, year, league
-        FROM vw_total_batting_average
+        FROM vw_total_batting_averages
         WHERE total_btg_avg = (
           SELECT MAX(total_btg_avg)
-          FROM vw_total_batting_average
+          FROM vw_total_batting_averages
           WHERE year = '#{year}' AND league = '#{league}'
         )
       ) v2 ON (s.player_id = v2.player_id AND s.year = v2.year AND v2.league = s.league)

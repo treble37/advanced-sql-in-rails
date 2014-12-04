@@ -46,13 +46,6 @@ ActiveRecord::Schema.define(version: 20141130020624) do
   add_index "statistics", ["year", "player_id", "league"], name: "year_player_id_league_idx", using: :btree
   add_index "statistics", ["year", "player_id"], name: "year_player_id_idx", using: :btree
 
-  create_table "vw_total_batting_average", id: false, force: true do |t|
-    t.string  "player_id"
-    t.integer "year"
-    t.decimal "total_btg_avg", precision: 36, scale: 4
-    t.string  "league"
-  end
-
   create_table "vw_total_batting_averages", id: false, force: true do |t|
     t.string  "player_id"
     t.integer "year"
