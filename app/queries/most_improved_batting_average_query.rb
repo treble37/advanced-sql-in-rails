@@ -29,7 +29,7 @@ class MostImprovedBattingAverageQuery
   end
 
   def prepare_results
-    MostImproved.new(self).results
+    MostImproved.new(self).render
   end
 
   def sql_query

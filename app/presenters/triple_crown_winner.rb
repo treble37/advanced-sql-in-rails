@@ -11,7 +11,7 @@ class TripleCrownWinner
     @winner
   end
 
-  def results
+  def render
     if winner?
       winner_message
     else

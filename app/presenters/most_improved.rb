@@ -15,7 +15,7 @@ class MostImproved
     @result
   end
 
-  def results
+  def render
     if result?
       winner_message
     else

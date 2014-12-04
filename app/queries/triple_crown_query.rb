@@ -19,7 +19,7 @@ class TripleCrownQuery
   end
 
   def prepare_results
-    TripleCrownWinner.new(result_of_query.first).results
+    TripleCrownWinner.new(result_of_query.first).render
   end
 
   def triple_crown_winner_query
