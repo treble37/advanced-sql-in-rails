@@ -12,7 +12,7 @@ class EasterEgg
 
   # yes, i stole this idea from rack lobster.
   def egg
-    @egg ||= [
+    [
       "<title>EF Codd</title>",
       "<pre>", Zlib::Inflate.inflate(Base64.decode64(codd)), "</pre>"
     ]
