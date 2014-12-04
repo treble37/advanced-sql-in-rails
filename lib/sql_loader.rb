@@ -6,8 +6,8 @@ class SqlLoader
     @filename = filename
   end
 
-  def compile(context)
-    ERB.new(template.gsub(/^\s+/, ""), nil, '%').result(context)
+  def compile(context = nil)
+    ERB.new(template.gsub(/^\s+/, ""), nil, '%').result(context || binding)
   end
 
   def template

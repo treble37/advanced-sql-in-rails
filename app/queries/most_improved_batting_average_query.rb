@@ -1,44 +1,6 @@
 class MostImprovedBattingAverageQuery
   MIN_AT_BATS = 200
 
-  class MostImproved
-    extend Forwardable
-
-    def_delegators :@result, :first_name, :last_name, :difference
-
-    attr_reader :from_year, :to_year
-
-    def initialize(query)
-      @from_year = query.from_year
-      @to_year   = query.to_year
-      @result    = query.result_of_query.first
-    end
-
-    def result?
-      @result
-    end
-
-    def results
-      if result?
-        winner_message
-      else
-        no_winner_message
-      end
-    end
-
-    def winner_message
-      <<-MSG.squish
-        #{from_year}-#{to_year}
-        Most Improved: #{first_name.capitalize} #{last_name.capitalize}
-        : #{difference}
-      MSG
-    end
-
-    def no_winner_message
-      "Error: no result was found."
-    end
-  end
-
   attr_reader :from_year, :to_year, :ctx
   attr_accessor :result_of_query
 

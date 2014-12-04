@@ -4,11 +4,8 @@ class Statistics < ActiveRecord::Base
       TripleCrownQuery.new(year, league, self).execute
     end
 
-    def most_improved_batting_average(from_year, to_year, arel=false)
-      MostImprovedBattingAverageQuery.new(from_year, to_year, self, arel).execute
+    def most_improved_batting_average(from_year, to_year)
+      MostImprovedBattingAverageQuery.new(from_year, to_year, self).execute
     end
   end
 end
-
-# save some keystrokes in console...
-Stats = Statistics
