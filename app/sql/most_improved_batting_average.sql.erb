@@ -1,12 +1,12 @@
 SELECT p.first_name,
 p.last_name,
 s1.player_id,
-MAX(s1.btg_average_10 - s1.btg_average_09) difference
+MAX(s1.btg_average_to - s1.btg_average_from) difference
 FROM
 (
   SELECT s.player_id,
-  IFNULL(SUM(IFNULL(s.hits, 0)) / SUM(IFNULL(s.at_bats, 0)), 0) btg_average_09,
-  v1.btg_average btg_average_10
+  IFNULL(SUM(IFNULL(s.hits, 0)) / SUM(IFNULL(s.at_bats, 0)), 0) btg_average_from,
+  v1.btg_average btg_average_to
   FROM statistics s
   INNER JOIN (
     SELECT player_id,

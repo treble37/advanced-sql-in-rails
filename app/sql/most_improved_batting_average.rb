@@ -1,44 +1,49 @@
 class MostImprovedBattingAverage
-  attr_reader :st, :pl
+  attr_reader :stats, :players
   attr_reader :from, :to, :min_at_bats
 
   def initialize(from, to, min_at_bats)
     @from, @to, @min_at_bats = from, to, min_at_bats
 
-    @st = Statistics.arel_table
-    @pl = Player.arel_table
+    @stats   = Statistics.arel_table
+    @players = Player.arel_table
   end
 
   def to_sql
-    (@to_sql ||= _to_sql).to_sql
+    (@to_sql ||= outermost_query).to_sql
   end
 
-  def s1
-    @s1 ||= _s1
+  def starting_year_batting_average
+    @starting_year_batting_average ||= _starting_year_batting_average
   end
 
-  def v1
-    @v1 ||= _v1
+  def ending_year_batting_average
+    @ending_year_batting_average ||= _ending_year_batting_average
   end
 
   #######
   private
   #######
 
-  def _to_sql
-    st.project(
-      pl[:first_name], pl[:last_name], s1[:player_id],
+  def outermost_query
+    stats.project(
+      players[:first_name],
+      players[:last_name],
+      starting_year_batting_average[:player_id],
       Arel::Nodes::Max.new([
-        s1[:btg_average_to] - s1[:btg_average_from]
+        starting_year_batting_average[:btg_average_to] -
+        starting_year_batting_average[:btg_average_from]
       ]).as('difference')
     ).from(
-      s1
+      starting_year_batting_average
     ).join(
-      pl
+      players
     ).on(
-      s1[:player_id].eq(pl[:player_id])
+      starting_year_batting_average[:player_id].eq(
+        players[:player_id]
+      )
     ).group(
-      s1[:player_id]
+      starting_year_batting_average[:player_id]
     ).order(
       "difference desc" # how to arelize this...
     ).take(
@@ -46,43 +51,41 @@ class MostImprovedBattingAverage
     )
   end
 
-  def _s1
-    st.project(
-      st[:player_id],
+  # inner query
+  def _starting_year_batting_average
+    stats.project(
+      stats[:player_id],
       batting_average('statistics').as('btg_average_from'),
-      v1[:btg_average].as('btg_average_to')
+      ending_year_batting_average[:btg_average].as('btg_average_to')
     ).from(
-      st
+      stats
     ).join(
-      v1
+      ending_year_batting_average
     ).on(
-      v1[:player_id].eq(st[:player_id])
+      ending_year_batting_average[:player_id].eq(
+        stats[:player_id]
+      )
     ).where(
-      st[:year].eq(from).and(st[:at_bats].gt(min_at_bats))
+      stats[:year].eq(from).and(stats[:at_bats].gt(min_at_bats))
     ).group(
-      st[:year], st[:player_id]
+      stats[:year], stats[:player_id]
     ).as('s1')
   end
 
-  def _v1
-    st.project(
-      st[:player_id],
+  # innermost query
+  def _ending_year_batting_average
+    stats.project(
+      stats[:player_id],
       batting_average('statistics').as('btg_average')
     ).where(
-      st[:year].eq(to).and(st[:at_bats].gt(min_at_bats))
+      stats[:year].eq(to).and(stats[:at_bats].gt(min_at_bats))
     ).group(
-      st[:year], st[:player_id]
+      stats[:year], stats[:player_id]
     ).as('v1')
   end
 
   # need to figure out how to arelize this...
   def batting_average(table)
-    Arel.sql(
-      <<-SQL.squish
-        IFNULL(
-          SUM( IFNULL(#{table}.hits, 0) ) / SUM( IFNULL(#{table}.at_bats, 0)),
-        0)
-      SQL
-    )
+    Arel.sql("IFNULL(SUM(IFNULL(#{table}.hits, 0)) / SUM(IFNULL(#{table}.at_bats, 0)),0)")
   end
 end
