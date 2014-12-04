@@ -8,6 +8,10 @@ Bundler.require(*Rails.groups)
 
 module Mystats
   class Application < Rails::Application
-    config.autoload_paths += %W(#{Rails.root}/lib #{Rails.root}/app/sql)
+    config.autoload_paths += %W(
+      #{Rails.root}/lib
+      #{Rails.root}/app/sql
+      #{Rails.root}/app/queries
+    )
   end
 end
