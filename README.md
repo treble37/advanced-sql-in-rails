@@ -1,6 +1,6 @@
 Code for a job interview, published here for posterity.
 
-[https://github.com/jwhiteman/baseball-stats][https://github.com/jwhiteman/baseball-stats]
+[https://github.com/jwhiteman/baseball-stats](https://github.com/jwhiteman/baseball-stats)
 
 Supposed to showcase object orientation (decent use of SRP throughout),
 View backed models, Arel, moderately complex queries, etc.
