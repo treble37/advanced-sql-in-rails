@@ -3,25 +3,31 @@ require 'base64'
 
 class EasterEgg
   def call(_env)
-    [200, text_plain, egg]
+    [200, text_plain, [title, body]]
   end
 
   def text_plain
     {"Content-Type" => "text/html"}
   end
 
-  # yes, i stole this idea from rack lobster.
-  def egg
-    [
-      "<title>EF Codd</title>",
-      "<pre>", Zlib::Inflate.inflate(Base64.decode64(codd)), "</pre>"
-    ]
+  def title
+    "<title>EF Codd</title>"
+  end
+
+  def body
+    "<pre>#{inflate_codd}</pre>"
+  end
+
+  # idea stolen from rack's lobster.
+  def inflate_codd
+    Zlib::Inflate.inflate(Base64.decode64(codd))
   end
 
   #######
   private
   #######
 
+  # http://en.wikipedia.org/wiki/Edgar_F._Codd
   def codd
     <<-CODD
     eJy1XEuaoyAQ3ucaLFjA5wGKTY7i/U8x1JMCBVsnMj3dJhr5qfcDk0IIKZUS
