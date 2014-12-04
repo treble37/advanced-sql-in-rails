@@ -1,3 +1,6 @@
+# This was done just to do it. It's a silly thing to do.
+# In case it's unclear: this is the AREL equivalent of
+# the SQL found in app/sql/most_improved_batting_average.sql.erb.
 class MostImprovedBattingAverage
   attr_reader :stats, :players
   attr_reader :from, :to, :min_at_bats
