@@ -12,7 +12,11 @@ class TripleCrownQuery < Query
     TripleCrownWinner.new(result_of_query.first).render
   end
 
+  # there are 3 versions of this query that you can try/explain:
+  # "yet_another_triple_crown_query"
+  # "triple_crown_winner"
+  # "improved_triple_crown"
   def query
-    SqlLoader.new('improved_triple_crown').compile(binding)
+    SqlLoader.new("yet_another_triple_crown_query").compile(binding)
   end
 end

@@ -1,0 +1,32 @@
+SELECT
+  p.last_name,
+  p.first_name,
+  <%= year %> year,
+  '<%= league %>' league
+FROM statistics s
+INNER JOIN players p ON (s.player_id = p.player_id)
+WHERE s.year = <%= year %> AND s.league = '<%= league %>'
+GROUP BY s.year, s.player_id
+HAVING
+(
+  ROUND(SUM(IFNULL(hits, 0)) / SUM(IFNULL(at_bats, 0)), 3),
+  ROUND(SUM(IFNULL(home_runs, 0)), 3),
+  ROUND(SUM(ifnull(runs_batted_in, 0)), 3)
+) =
+(
+  SELECT
+    MAX(v1.total_btg_avg) max_btg_avg,
+    MAX(v1.total_home_runs) max_home_runs,
+    MAX(v1.total_rbis) max_rbis
+  FROM (
+    SELECT
+      ROUND(SUM(IFNULL(hits, 0)) / SUM(IFNULL(at_bats, 0)), 3) total_btg_avg,
+      ROUND(SUM(IFNULL(home_runs, 0)), 3) total_home_runs,
+      ROUND(SUM(ifnull(runs_batted_in, 0)), 3) total_rbis
+    FROM statistics
+    WHERE year = <%= year %>
+      AND league = '<%= league %>'
+      AND at_bats > 400
+    GROUP BY year, player_id
+  ) v1
+)

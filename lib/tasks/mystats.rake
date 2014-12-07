@@ -4,6 +4,7 @@ task :open do
 end
 
 task run: :environment do
+  puts Statistics.triple_crown_winner(2011, 'AL')
   puts Statistics.triple_crown_winner(2012, 'AL')
   puts
   puts Statistics.most_improved_batting_average(2009, 2010)
