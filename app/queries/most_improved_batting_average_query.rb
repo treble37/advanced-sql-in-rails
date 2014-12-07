@@ -7,7 +7,7 @@ class MostImprovedBattingAverageQuery < Query
 
     @from_year = from_year
     @to_year   = to_year
-    @arel      = arel
+    @arel      = true
 
     @min_at_bats = 200
   end

@@ -48,7 +48,7 @@ class MostImprovedBattingAverage
     ).group(
       starting_year_batting_average[:player_id]
     ).order(
-      "difference desc" # how to arelize this...
+      difference: :desc
     ).take(
       1
     )
@@ -87,7 +87,6 @@ class MostImprovedBattingAverage
     ).as('v1')
   end
 
-  # "IFNULL(SUM(IFNULL(#{table}.hits, 0)) / SUM(IFNULL(#{table}.at_bats, 0)),0)"
   def batting_average
     Arel::Nodes::NamedFunction.new('IFNULL', [
       Arel::Nodes::InfixOperation.new(
