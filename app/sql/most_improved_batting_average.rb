@@ -58,7 +58,7 @@ class MostImprovedBattingAverage
   def _starting_year_batting_average
     stats.project(
       stats[:player_id],
-      batting_average('statistics').as('btg_average_from'),
+      batting_average.as('btg_average_from'),
       ending_year_batting_average[:btg_average].as('btg_average_to')
     ).from(
       stats
@@ -79,7 +79,7 @@ class MostImprovedBattingAverage
   def _ending_year_batting_average
     stats.project(
       stats[:player_id],
-      batting_average('statistics').as('btg_average')
+      batting_average.as('btg_average')
     ).where(
       stats[:year].eq(to).and(stats[:at_bats].gt(min_at_bats))
     ).group(
@@ -87,8 +87,18 @@ class MostImprovedBattingAverage
     ).as('v1')
   end
 
-  # need to figure out how to arelize this...
-  def batting_average(table)
-    Arel.sql("IFNULL(SUM(IFNULL(#{table}.hits, 0)) / SUM(IFNULL(#{table}.at_bats, 0)),0)")
+  # "IFNULL(SUM(IFNULL(#{table}.hits, 0)) / SUM(IFNULL(#{table}.at_bats, 0)),0)"
+  def batting_average
+    Arel::Nodes::NamedFunction.new('IFNULL', [
+      Arel::Nodes::InfixOperation.new(
+        '/',
+        Arel::Nodes::Sum.new([
+          Arel::Nodes::NamedFunction.new('IFNULL', [stats[:hits], 0])
+        ]),
+        Arel::Nodes::Sum.new([
+          Arel::Nodes::NamedFunction.new('IFNULL', [stats[:at_bats], 0])
+        ])
+      ), 0
+    ])
   end
 end
