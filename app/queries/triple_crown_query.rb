@@ -13,6 +13,6 @@ class TripleCrownQuery < Query
   end
 
   def query
-    SqlLoader.new('triple_crown_winner').compile(binding)
+    SqlLoader.new('improved_triple_crown').compile(binding)
   end
 end

@@ -1,0 +1,40 @@
+SELECT
+  p.last_name,
+  p.first_name,
+  <%= year %> year,
+ '<%= league %>' league
+FROM players p
+INNER JOIN
+(
+  SELECT
+    player_id,
+    SUM(IFNULL(hits, 0)) / SUM(IFNULL(at_bats, 0)) total_btg_avg,
+    SUM(IFNULL(home_runs, 0)) total_home_runs,
+    SUM(ifnull(runs_batted_in, 0)) total_rbis
+  FROM statistics
+  WHERE year = <%= year %>
+    AND league = '<%= league %>'
+    AND at_bats > 400
+  GROUP BY year, player_id
+) v1 ON (p.player_id = v1.player_id)
+INNER JOIN
+(
+  SELECT
+    MAX(v2.total_btg_avg) max_btg_avg,
+    MAX(v2.total_home_runs) max_home_runs,
+    MAX(v2.total_rbis) max_rbis
+  FROM (
+    SELECT
+      player_id,
+      SUM(IFNULL(hits, 0)) / SUM(IFNULL(at_bats, 0)) total_btg_avg,
+      SUM(IFNULL(home_runs, 0)) total_home_runs,
+      SUM(ifnull(runs_batted_in, 0)) total_rbis
+    FROM statistics
+    WHERE year = <%= year %>
+      AND league = '<%= league %>'
+      AND at_bats > 400
+    GROUP BY year, player_id
+  ) v2
+) v3 ON (v1.total_btg_avg   = v3.max_btg_avg AND
+         v1.total_home_runs = v3.max_home_runs AND
+         v1.total_rbis      = v3.max_rbis)

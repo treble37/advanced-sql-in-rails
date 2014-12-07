@@ -1,3 +1,4 @@
+-- my first attempt. see "improved_triple_crownl.sql.erb" for a better query.
 SELECT p.last_name, p.first_name, s.year, s.league FROM statistics s
 INNER JOIN (
   SELECT player_id, year, league
